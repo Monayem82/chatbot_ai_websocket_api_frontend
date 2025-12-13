@@ -40,7 +40,7 @@ const Login = () => {
                 
                 // TODO: User ke dashboard e redirect korun (e.g., using useNavigate hook)
                 alert("Login successful! Redirecting to dashboard...");
-                navigate('/dashboard'); 
+                navigate('/dashboard',); 
             } else {
                 // If token is not present in response, handle accordingly
                 console.warn("Token not found in response data.");

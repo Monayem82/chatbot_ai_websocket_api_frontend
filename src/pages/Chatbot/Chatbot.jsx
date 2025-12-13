@@ -47,7 +47,7 @@ const Chatbot = () => {
             };
 
             const response = await axios.post(CHAT_API_URL, apiPayload);
-            const aiResponseText = response.data.response || "Sorry, I couldn't process that request.";
+            const aiResponseText = response.data.generated_text || "Sorry, I couldn't process that request.";
             
             // 2. Add AI Response
             setMessages(prev => [...prev, { type: 'ai', text: aiResponseText }]);
