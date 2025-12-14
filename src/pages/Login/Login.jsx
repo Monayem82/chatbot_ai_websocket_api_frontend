@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom'; // NavLink must be imported from 'react-router-dom'
+import { AuthContext } from '../../context/AuthContext';
 
 // Note: Replace 'http://127.0.0.1:8000/auth-info/login/' with your actual deployed URL in production
 const LOGIN_API_URL = 'http://127.0.0.1:8000/auth-info/login/';
@@ -8,6 +9,11 @@ const LOGIN_API_URL = 'http://127.0.0.1:8000/auth-info/login/';
 const Login = () => {
 
     const navigate = useNavigate();
+
+    const {userInfo} =useContext(AuthContext)
+
+    console.log('login ',userInfo)
+
     // 1. Use State Hooks for managing form inputs and UI state
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
