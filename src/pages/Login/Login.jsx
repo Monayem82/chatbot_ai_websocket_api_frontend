@@ -10,7 +10,7 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const {userInfo} =useContext(AuthContext)
+    const {userInfo ,login} =useContext(AuthContext)
 
     console.log('login ',userInfo)
 
@@ -36,9 +36,12 @@ const Login = () => {
 
             // Assuming the API returns a structure like: { token: '...' } or { access: '...', refresh: '...' }
             const { token, access } = response.data;
+            // Auth Context login
+            login(response.data,response.data.access,response.data.refresh)
+            
             
             // 3. Successful Login Handling
-            console.log('Login Successful:', response.data);
+            console.log('Login Successful:', response.data.access);
 
             if (token || access) {
                 // Store the token (e.g., in localStorage)
@@ -46,7 +49,7 @@ const Login = () => {
                 
                 // TODO: User ke dashboard e redirect korun (e.g., using useNavigate hook)
                 alert("Login successful! Redirecting to dashboard...");
-                navigate('/dashboard',); 
+                navigate('/dashboard',{ replace: true });
             } else {
                 // If token is not present in response, handle accordingly
                 console.warn("Token not found in response data.");
