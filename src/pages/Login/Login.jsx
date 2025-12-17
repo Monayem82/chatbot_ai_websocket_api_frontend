@@ -1,109 +1,64 @@
 import React, { useContext, useState } from 'react';
-import axios from 'axios';
-import { NavLink, useNavigate } from 'react-router-dom'; // NavLink must be imported from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
-// Note: Replace 'http://127.0.0.1:8000/auth-info/login/' with your actual deployed URL in production
-const LOGIN_API_URL = 'http://127.0.0.1:8000/auth-info/login/';
-
 const Login = () => {
-
     const navigate = useNavigate();
+    
+    // AuthContext থেকে login ফাংশনটি আনা হলো
+    const { login } = useContext(AuthContext);
 
-    const {userInfo ,login} =useContext(AuthContext)
-
-    console.log('login ',userInfo)
-
-    // 1. Use State Hooks for managing form inputs and UI state
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null); // To display error messages
-    const [loading, setLoading] = useState(false); // To disable button during request
+    const [error, setError] = useState(null); 
+    const [loading, setLoading] = useState(false);
 
     const handleLoginForm = async (e) => {
         e.preventDefault();
-        setError(null); // Clear previous errors
-        setLoading(true); // Start loading
+        setError(null);
+        setLoading(true);
 
-        const userLoginInfo = {
-            username_or_email: email, // Assuming your Django API accepts this key
+        const credentials = {
+            username_or_email: email, 
             password: password,
         };
 
-        try {
-            // 2. Axios POST request
-            const response = await axios.post(LOGIN_API_URL, userLoginInfo);
+        // AuthContext এর login ফাংশন কল করা হচ্ছে
+        const result = await login(credentials);
 
-            // Assuming the API returns a structure like: { token: '...' } or { access: '...', refresh: '...' }
-            const { token, access } = response.data;
-            // Auth Context login
-            login(response.data,response.data.access,response.data.refresh)
-            
-            
-            // 3. Successful Login Handling
-            console.log('Login Successful:', response.data.access);
-
-            if (token || access) {
-                // Store the token (e.g., in localStorage)
-                localStorage.setItem('authToken', token || access);
-                
-                // TODO: User ke dashboard e redirect korun (e.g., using useNavigate hook)
-                alert("Login successful! Redirecting to dashboard...");
-                navigate('/dashboard',{ replace: true });
-            } else {
-                // If token is not present in response, handle accordingly
-                console.warn("Token not found in response data.");
-            }
-
-        } catch (err) {
-            // 4. Detailed Error Handling
-            if (err.response) {
-                // Server responded with a status code outside the 2xx range
-                console.error('Login Failed (Server Error):', err.response.data);
-                
-                // Try to display a user-friendly error from the server response
-                const serverError = err.response.data.detail || err.response.data.non_field_errors?.[0] || 'Invalid credentials or API error.';
-                setError(serverError);
-
-            } else if (err.request) {
-                // Request was made but no response received (e.g., API is down)
-                console.error('Login Failed (No Response):', err.request);
-                setError('Could not connect to the server. Please check the API status.');
-                
-            } else {
-                // Something else happened in setting up the request that triggered an Error
-                console.error('Error:', err.message);
-                setError('An unexpected error occurred during login.');
-            }
-        } finally {
-            setLoading(false); // Stop loading regardless of success or failure
+        if (result.success) {
+            // সাকসেস হলে ড্যাশবোর্ডে রিডাইরেক্ট
+            console.log('Login Successful');
+            navigate('/dashboard', { replace: true });
+        } else {
+            // এরর হলে মেসেজ সেট করা
+            setError(result.message || 'Invalid email or password');
+            setLoading(false); 
         }
     };
 
     return (
         <div className="card bg-base-100 mx-auto p-2 m-4 w-full max-w-sm shrink-0 shadow-2xl">
             <div className="card-body">
-                <h1 className="text-3xl text-center">User Login</h1>
+                <h1 className="text-3xl text-center font-bold">User Login</h1>
                 
-                {/* 5. Display Error Message */}
                 {error && (
-                    <div className="text-red-600 text-sm p-2 bg-red-100 border border-red-400 rounded">
+                    <div className="text-red-600 text-sm p-2 bg-red-100 border border-red-400 rounded mt-2">
                         ⚠️ {error}
                     </div>
                 )}
                 
                 <form onSubmit={handleLoginForm}>
-                    {/* Email Input */}
+                    {/* Email/Username Input */}
                     <label className="label">
                         <span className="label-text">Email or Username</span>
                     </label>
                     <input 
-                        type="text" // Changed from email to text to accommodate username_or_email
-                        name="email" 
+                        type="text" 
                         className="input input-bordered w-full" 
-                        placeholder="Email or Username"
+                        placeholder="Enter email or username"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)} // State update
+                        onChange={(e) => setEmail(e.target.value)} 
                         required
                     />
 
@@ -113,25 +68,22 @@ const Login = () => {
                     </label>
                     <input 
                         type="password" 
-                        name="password" 
                         className="input input-bordered w-full" 
-                        placeholder="Password"
+                        placeholder="Enter password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)} // State update
+                        onChange={(e) => setPassword(e.target.value)} 
                         required
                     />
                     
-                    {/* Links */}
                     <div className="flex justify-between mt-4">
-                        <NavLink to="/forgot-password" className="link link-hover text-sm">Forgot Password?</NavLink>
-                        <NavLink to="/register" className="link link-hover text-sm">Don't have an account?</NavLink>
+                        <NavLink to="/forgot-password" size="sm" className="link link-hover text-xs text-gray-500">Forgot Password?</NavLink>
+                        <NavLink to="/register" className="link link-hover text-xs text-blue-600">Don't have an account?</NavLink>
                     </div>
                     
-                    {/* Submit Button */}
                     <button 
-                        className="btn btn-neutral w-full mt-6" 
+                        className={`btn btn-neutral w-full mt-6 ${loading ? 'loading' : ''}`} 
                         type="submit" 
-                        disabled={loading} // Disable button when loading
+                        disabled={loading}
                     >
                         {loading ? 'Logging in...' : 'Login'}
                     </button>

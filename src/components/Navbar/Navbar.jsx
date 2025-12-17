@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
 
 const Navbar = () => {
 
     // const {userInfo} =useContext(AuthContext)
 
-    const {logout} =useContext(AuthContext)
-    const navigate = useNavigate();
+    const {logout,user} =useContext(AuthContext)
+    // const navigate = useNavigate();
 
 
     const userInfoData = localStorage.getItem('user')
@@ -18,39 +17,16 @@ const Navbar = () => {
 
 
 
-    const handleLogout = async () => {
 
-        try {
-            // localStorage থেকে refresh token নেওয়া
-            const refreshToken = localStorage.getItem("refreshToken");
-
-            // Django Logout API কল করা
-            await axios.post("http://localhost:8000/auth-info/logout/", {
-                refresh: refreshToken,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-                }
-            });
-            // Context variable or function logout
-            logout()
-            alert("Successfully logged out!");
-            // চাইলে redirect করতে পারো
-            navigate("/login",{ replace: true });
-        } catch (error) {
-            console.error("Logout failed:", error);
-            alert("Logout failed!");
-        }
-    };
 
 
     const links = <>
         {
-            userInfo ? <>
+            user ? <>
                 <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li>
                 <li> <NavLink to={'/contact'}>Contact</NavLink></li>
                 <li><NavLink to={'/chatbot'}>Chatbot</NavLink></li>
-                <li><button className='btn' onClick={()=>handleLogout()}>Logout</button></li>
+                <li><button className='btn' onClick={logout}>Logout</button></li>
             </> :
                 <>
                     <li> <NavLink to={'/login'}>Login</NavLink> </li>
@@ -83,7 +59,7 @@ const Navbar = () => {
             </div>
             <div className="navbar-end">
                 {
-                    userInfo ? <NavLink to={'/profile'}><button className='btn'>{userInfo.username}</button></NavLink> : <button>  </button>
+                    user ? <NavLink to={'/profile'}><button className='btn'>{user.username}</button></NavLink> : <button>  </button>
                 }
             </div>
         </div>

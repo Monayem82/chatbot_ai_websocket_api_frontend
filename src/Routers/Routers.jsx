@@ -6,29 +6,38 @@ import Root from '../Root/Root';
 import Login from '../pages/Login/Login.jsx';
 import Dashboard from '../pages/Dashboard/Dashboard.jsx';
 import Profile from '../pages/Profile/Profile.jsx';
+import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute.jsx';
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
-    children:[
-        {
-            path:'/login',
-            Component:Login,
-        },
-        {
-          path:'/register',
-          Component:React.lazy(()=>import('../pages/Register/Register.jsx')),
-        },
-        {
-          path:'/dashboard',
-          Component:Dashboard,
-        },
-        {
-          path:'/profile',
-          Component:Profile,
-        }
+    children: [
+      {
+        path: '/login',
+        Component: Login,
+      },
+      {
+        path: '/register',
+        Component: React.lazy(() => import('../pages/Register/Register.jsx')),
+      },
+
+      // ProtectedRoutes
+      {
+        element: <ProtectedRoute></ProtectedRoute>,
+        children: [
+          {
+            path: '/dashboard',
+            element: <Dashboard></Dashboard>
+          },
+          {
+            path: '/profile',
+            element: <Profile></Profile>
+          }
+        ]
+      }
+
     ]
   },
 ]);
