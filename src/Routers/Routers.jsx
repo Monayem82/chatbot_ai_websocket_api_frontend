@@ -7,6 +7,7 @@ import Login from '../pages/Login/Login.jsx';
 import Dashboard from '../pages/Dashboard/Dashboard.jsx';
 import Profile from '../pages/Profile/Profile.jsx';
 import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute.jsx';
+import ChatMsg from '../pages/ChatMsg/ChatMsg.jsx';
 
 
 export const router = createBrowserRouter([
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
           {
             path: '/profile',
             element: <Profile></Profile>
+          },
+          {
+            path:'/chatmsg',
+            element:<ChatMsg></ChatMsg>
           }
         ]
       }

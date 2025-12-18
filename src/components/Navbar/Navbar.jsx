@@ -25,7 +25,7 @@ const Navbar = () => {
             user ? <>
                 <li><NavLink to={'/dashboard'}>Dashboard</NavLink></li>
                 <li> <NavLink to={'/contact'}>Contact</NavLink></li>
-                <li><NavLink to={'/chatbot'}>Chatbot</NavLink></li>
+                <li><NavLink to={'/chatmsg'}>chat-message</NavLink></li>
                 <li><button className='btn' onClick={logout}>Logout</button></li>
             </> :
                 <>
