@@ -8,6 +8,7 @@ import Dashboard from '../pages/Dashboard/Dashboard.jsx';
 import Profile from '../pages/Profile/Profile.jsx';
 import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute.jsx';
 import ChatMsg from '../pages/ChatMsg/ChatMsg.jsx';
+import ChatPage from '../components/ChatExplore/ChatPage.jsx';
 
 
 export const router = createBrowserRouter([
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
           {
             path:'/chatmsg',
             element:<ChatMsg></ChatMsg>
+          },
+          {
+            path:'/interactive-chatbox',
+            element:<ChatPage></ChatPage>
           }
         ]
       }

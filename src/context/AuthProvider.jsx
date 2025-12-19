@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
 
     const getUserData = async () => {
         try {
-            const res = await api.get("user-info/");
+            const res = await api.get("auth-info/user-info/");
             // ধরে নিচ্ছি রেসপন্স ফরম্যাট: { id: 1, name: '...', profile: { bio: '...', image: '...' } }
             setUser(res.data);
             console.log(user)
@@ -33,7 +33,7 @@ const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            const res = await api.post("login/", credentials);
+            const res = await api.post("auth-info/login/", credentials);
             const { access, refresh } = res.data;
 
             localStorage.setItem("accessToken", access);
