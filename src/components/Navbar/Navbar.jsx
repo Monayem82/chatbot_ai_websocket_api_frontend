@@ -28,6 +28,7 @@ const Navbar = () => {
                 <li><NavLink to={'/chatmsg'}>chat-message</NavLink></li>
                 <li><NavLink to={'/interactive-chatbox'}>Real-Chat</NavLink></li>
                 <li><button className='btn' onClick={logout}>Logout</button></li>
+                <li><NavLink to={'/chat'}>Messages Now</NavLink></li>
             </> :
                 <>
                     <li> <NavLink to={'/login'}>Login</NavLink> </li>

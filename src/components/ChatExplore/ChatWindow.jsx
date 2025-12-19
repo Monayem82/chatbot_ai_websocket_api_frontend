@@ -3,7 +3,7 @@ import api from '../../context/api.js';
 import { AuthContext } from '../../context/AuthContext.jsx';
 import AuthProvider from '../../context/AuthProvider.jsx';
 
-const ChatWindow = ({ activeChat,users }) => {
+const ChatWindow = ({ activeChat }) => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [socket, setSocket] = useState(null);

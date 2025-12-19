@@ -9,6 +9,7 @@ import Profile from '../pages/Profile/Profile.jsx';
 import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute.jsx';
 import ChatMsg from '../pages/ChatMsg/ChatMsg.jsx';
 import ChatPage from '../components/ChatExplore/ChatPage.jsx';
+import ChatContainer from '../components/RealChat/ChatContainer.jsx';
 
 
 export const router = createBrowserRouter([
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
           {
             path:'/interactive-chatbox',
             element:<ChatPage></ChatPage>
+          },
+          {
+            path:'/message',
+            element:<ChatContainer></ChatContainer>
           }
         ]
       }
